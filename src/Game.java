@@ -3,6 +3,7 @@ public class Game {
 	
 	public static void main(String[] args) {
 		
+		
 		Square square1 = new Square(150.00,59.01);
 		square1.isSlipperySurface = true;
 		square1.setBorderIndirectionTo(1, true);
