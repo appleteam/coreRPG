@@ -344,20 +344,20 @@ public class Square {
 	 * @param direction
 	 * 
 	 *  @post	...
-	 *  		| if(otherSquare == null || (! isValidDirection(direction))
+	 *  		| if(otherSquare == null || otherSquare == this || (! isValidDirection(direction))
 	 *  		|	then throws IllegalArgumentException
 	 *  
 	 *  @post	...
-	 *  		| 	if(otherSquare != null && (isValidDirection(direction))
+	 *  		| 	if(otherSquare != null && otherSquare != this && (isValidDirection(direction))
 	 *  		|	then new.getBorderInDirection(direction) == false &&
 	 *  		|		(new otherSquare).getBorderInDirection(direction) == false
 	 *  @post	...
-	 *  		|	if(otherSquare != null && (isValidDirection(direction))
+	 *  		|	if(otherSquare != null &&  (isValidDirection(direction) && otherSquare != this)
 	 *  		|		new.getHumidity() = getAverageHumidity(this.getHumidity(),otherSquare.getHumidity()) &&
 	 *  		|		(new otherSquare).getHumidity() = getAverageHumidity(this.getHumidity(),otherSquare.getHumidity())
 	 *  @effect	...
-	 *  		|	if(otherSquare != null && (isValidDirection(direction))
-	 *  		|		setMergedTemperature(otherSquare)	
+	 *  		|	if(otherSquare != null && (isValidDirection(direction)&& otherSquare != this)
+	 *  		|		
 	 */
 	public void mergeWithSquareInDirection(Square otherSquare, int direction) throws IllegalArgumentException{
 		;
