@@ -360,16 +360,6 @@ public class Square {
 	 *  		|		
 	 */
 	public void mergeWithSquareInDirection(Square otherSquare, int direction) throws IllegalArgumentException{
-		;
-	}
-	
-	/**
-	 * 
-	 * @param firstTemperature
-	 * @param secondTemperature
-	 * @return
-	 */
-	public void setMergedTemperatures(Square otherSquare){
 		double weight = 2-(2*mergeConstant);
 		double averageHumidity = getAverageHumidity(this.getHumidity(), otherSquare.getHumidity());
 		
@@ -378,8 +368,10 @@ public class Square {
 		double weightTemperatureOne = (a*(this.getHumidity()/averageHumidity)) + mergeConstant;
 		double weightTemperatureTwo = (a*(otherSquare.getHumidity()/averageHumidity)) + mergeConstant;
 		
-		this.setTemperature(this.getTemperatureInCelcius()*weightTemperatureOne);
-		otherSquare.setTemperature(otherSquare.getTemperatureInCelcius()*weightTemperatureTwo);
+		double newTemperature = (this.getTemperatureInCelcius()*weightTemperatureOne+otherSquare.getTemperatureInCelcius()*weightTemperatureTwo)/2;
+		
+		this.setTemperature(newTemperature);
+		otherSquare.setTemperature(newTemperature);
 	}
 	
 	private static double mergeConstant;
