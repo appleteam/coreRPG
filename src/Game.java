@@ -12,8 +12,7 @@ public class Game {
 		
 		printSquare(square1);
 		
-		Square square2 = new Square();
-		square2.setTemperature(40);
+		Square square2 = new Square(40.00,89.90);
 		square2.isSlipperySurface = false;
 		square2.setBorderIndirectionTo(2, true);
 		square2.setBorderIndirectionTo(3, true);
@@ -30,13 +29,13 @@ public class Game {
 	
 	public static void printSquare(Square square){
 		
-		System.out.println("The temperature of the square " + square.getTemperatureInCelcius());
-		System.out.println("The temperature of the square " + square.getHumidity());
+		System.out.println("\nThe temperature of the square " + square.getTemperatureInCelcius());
+		System.out.println("The humidity of the square " + square.getHumidity());
 		
 		if(square.isSlipperySurface == true)
-			System.out.println("Square has a slippery surface");
+			System.out.println("\nSquare has a slippery surface\n");
 		else
-			System.out.println("Square does not have a slippery surface");
+			System.out.println("\nSquare does not have a slippery surface\n");
 		
 		for (int i = 1; i<7;i++){
 			if (square.getBorderInDirection(i) == true){
