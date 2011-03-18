@@ -4,7 +4,7 @@ import be.kuleuven.cs.som.annotate.*;
  * 
  * Class to represent the smallest element of a location
  * 
- * @author benlefevere, Karel Domin
+ * @author Ben Lefevere, Karel Domin
  * @version 1.0
  * 
  * @invar 	getTemperatureInCelcius() must be a valid temperature
@@ -21,7 +21,7 @@ public class Square {
 	 * this constructor will construct a new Square object with the default values assigned to the 
 	 * attributes. 
 	 */
-	@Raw
+	//@Raw??
 	public Square(){
 		;
 	}
@@ -34,13 +34,19 @@ public class Square {
 	 * 			the temperature of this new Square in degrees Celcius
 	 * @param 	humidity
 	 * 			the humidity of this new Square 
+	 * @throws	
+	 * 			| if( (!isValidTemperature(temperature) || (!isValidTemperature(humidity))
+	 * 			| 	then throws IllegalArgumentException
 	 * @Post	the temperature of this new Square is equal to temperature
 	 * 			| new.getTemperatureInCelcius() == temperature
 	 * @Post	the humidity of this new Square is equal to humidity
 	 * 			| new.getHumidity() == humidity
 	 */
 	@Raw
-	public Square(double temperature, double humidity){
+	//TODO defensive throws IllegalArgument
+	public Square(double temperature, double humidity) throws IllegalArgumentException{
+		if((!isValidTemperature(temperature)) || (!isValidTemperature(humidity)))
+				throw new IllegalArgumentException();
 		this.temperature = temperature;
 		this.humidity = humidity;
 	}
@@ -352,18 +358,18 @@ public class Square {
 	 * @param direction
 	 * 			the direction the two squares are merged
 	 * 
-	 *  @throws	throws an IllegalArgumentException if otherSquare's reference is null or the other Square equal to this Square 
+	 * @throws	throws an IllegalArgumentException if otherSquare's reference is null or the other Square equal to this Square 
 	 *  		or the direction is not valid
 	 *  		| if(otherSquare == null || otherSquare == this || (! isValidDirection(direction))
 	 *  		|	then throws IllegalArgumentException
 	 *  
-	 *  @post	sets the direction in which the squares are merged to false
+	 * @post	sets the direction in which the squares are merged to false
 	 *  		|	then new.getBorderInDirection(direction) == false &&
 	 *  		|		(new otherSquare).getBorderInDirection(direction) == false
-	 *  @post	sets the humidity of both squares to the average humidity of both squares
+	 * @post	sets the humidity of both squares to the average humidity of both squares
 	 *  		|		new.getHumidity() = getAverageHumidity(this.getHumidity(),otherSquare.getHumidity()) &&
 	 *  		|		(new otherSquare).getHumidity() = getAverageHumidity(this.getHumidity(),otherSquare.getHumidity())
-	 *  @post	sets the temperature of both squares to the new temperature
+	 * @post	sets the temperature of both squares to the new temperature
 	 *  		|		then new.getTemperatureInCelcius =  this.getTemperatureInCelcius() * (1 - mergeConstant) * 
 	 *  		|						(this.getHumidity/(getAverageHumidity(this.getHumidity(), otherSquare.getHumidity()))) + mergeConstant; 
 	 *  		|		(new otherSquare).getTemperatureInCelcius = otherSquare.getTemperatureInCelcius() * (1 - mergeConstant) * 
