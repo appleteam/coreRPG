@@ -4,7 +4,7 @@ public class Game {
 	public static void main(String[] args) {
 		
 		
-		Square square1 = new Square(150.00,0);
+		Square square1 = new Square(150.00,59.01);
 		square1.isSlipperySurface = true;
 		square1.setBorderIndirectionTo(1, true);
 		square1.setBorderIndirectionTo(2, true);
@@ -12,7 +12,7 @@ public class Game {
 		
 		printSquare(square1);
 		
-		Square square2 = new Square(40.00,0);
+		Square square2 = new Square(40.00,89.90);
 		square2.isSlipperySurface = false;
 		square2.setBorderIndirectionTo(2, true);
 		square2.setBorderIndirectionTo(3, true);

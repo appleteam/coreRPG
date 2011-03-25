@@ -32,16 +32,16 @@ public class SquareTest {
 	public final void testGetTemperatureInKelvin(){
 		Square testSquare = new Square(-200,0);
 		assertEquals(73, testSquare.getTemperatureInKelvin(),0);
-		testSquare.setTemperature(5000);
-		assertEquals(5273, testSquare.getTemperatureInKelvin(),0);
+		testSquare.setTemperatureKelvin(5000);
+		assertEquals(5000, testSquare.getTemperatureInKelvin(),0);
 	}
 	
 	@Test
 	public final void testGetTemperatureInFahrenheit(){
 		Square testSquare = new Square(-200,0);
 		assertEquals(((-200*9)/5) + 32, testSquare.getTemperatureInFarenheit(),0.01);
-		testSquare.setTemperature(5000);
-		assertEquals(((5000*9)/5) + 32, testSquare.getTemperatureInFarenheit(),0.01);
+		testSquare.setTemperatureFahrenheit(9032);
+		assertEquals(9032, testSquare.getTemperatureInFarenheit(),0.01);
 	}
 	
 	@Test
@@ -153,7 +153,6 @@ public class SquareTest {
 	}
 	
 	
-	// wat als beide humidity's nul zijn? ==> mergewith: 0/0
 	@Test
 	public final void testMergeWithSquareInDirection(){
 		Square testSquare1 = new Square();
@@ -196,6 +195,18 @@ public class SquareTest {
 		testSquare.setHumidity(25);
 		testSquare.setTemperature(612);
 		assertEquals(-26.87,testSquare.getInhabitability(),0.01);
+	}
+	
+	@Test
+	public final void testSetMergeConstant(){
+		Square.setMergeConstant(0.4);
+		assertEquals(0.4,Square.getMergeConstant(),0);
+		Square.setMergeConstant(0.1);
+		assertEquals(0.1,Square.getMergeConstant(),0);
+		Square.setMergeConstant(0.5);
+		assertEquals(0.4,Square.getMergeConstant(),0);
+		Square.setMergeConstant(0.05);
+		assertEquals(0.4,Square.getMergeConstant(),0);
 	}
 	
 

@@ -1,3 +1,6 @@
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 import be.kuleuven.cs.som.annotate.*;
 
 /**
@@ -13,6 +16,9 @@ import be.kuleuven.cs.som.annotate.*;
  * @invar 	getHumidity() must be a valid humidity
  * 			| isValidHumidity(getHumidity())
  *
+ * @invar 	getMergeConstant() must be valid
+ * 			| isValidMergeConstant(getMergeConstant())
+ *
  */
 public class Square {
 	
@@ -21,7 +27,7 @@ public class Square {
 	 * this constructor will construct a new Square object with the default values assigned to the 
 	 * attributes. 
 	 */
-	//@Raw??
+	
 	public Square(){
 		;
 	}
@@ -42,10 +48,8 @@ public class Square {
 	 * @Post	the humidity of this new Square is equal to humidity
 	 * 			| new.getHumidity() == humidity
 	 */
-	@Raw
-	//TODO defensive throws IllegalArgument
 	public Square(double temperature, double humidity) throws IllegalArgumentException{
-		if((!isValidTemperature(temperature)) || (!isValidTemperature(humidity)))
+		if((!isValidTemperature(temperature)) || (!isValidHumidity(humidity)))
 				throw new IllegalArgumentException();
 		this.temperature = temperature;
 		this.humidity = humidity;
@@ -66,22 +70,23 @@ public class Square {
 	 * gives the temperature of the Square in Kelvin
 	 *
 	 * @return	The temperature of the square in Kelvin
-	 * 			| result == celciusToKelvin(temperature)
+	 * 			| result == celciusToKelvin(getTemperatureInCelcius())
 	 */
-	@Basic
+	
 	public double getTemperatureInKelvin(){
-		return celciusToKelvin(temperature);
+		return celciusToKelvin(getTemperatureInCelcius());
 	}
 	
 	/**
 	 * gives the temperature of the Square in degrees Farenheit
 	 *
 	 * @return	The temperature of the square in degrees Farenheit
-	 * 			| result == celciusToFarenheit(temperature)
+	 * 			| result == celciusToFarenheit(getTemperatureInCelcius())
 	 */
-	@Basic
+
+	
 	public double getTemperatureInFarenheit(){
-		return celciusToFarenheit(temperature);
+		return celciusToFarenheit(getTemperatureInCelcius());
 	}
 	
 	/**
@@ -93,7 +98,7 @@ public class Square {
 	 * 			| result == ((degreesCelcius*9)/5) + 32
 	 */
 	public double celciusToFarenheit (double degreesCelcius){
-		return ((degreesCelcius*9)/5) + 32;
+		return ((degreesCelcius*9.0)/5.0) + 32.0;
 	}
 	
 	/**
@@ -121,6 +126,7 @@ public class Square {
 	 * @post	The temperature of the square is equal to degreesCelcius
 	 * 			| new.getTemperatureInCelcius()== degreesCelcius
 	 */
+	
 	public void setTemperature(double degreesCelcius) throws IllegalArgumentException{
 		if (isValidTemperature(degreesCelcius)){
 			temperature = degreesCelcius;
@@ -130,6 +136,51 @@ public class Square {
 	}
 	
 	/**
+	 * sets the temperature of this Square to the given temperature (in Kelvin)
+	 * 
+	 * @param 	kelvin
+	 * 			the temperature in degrees Kelvin
+	 * @throws IllegalArgumentException
+	 * 			throws an IllegalArgumentException if degreesKelvin is not valid
+	 * 			|if (! isValidTemperature(kelvin - 273)) 
+	 * 			|	then throw IllegalArgumentException
+	 * 
+	 * @post	The temperature of the square is equal to kelvin
+	 * 			| new.getTemperatureInKelvin()== kelvin
+	 */
+	@Raw
+	public void setTemperatureKelvin(double kelvin) throws IllegalArgumentException{
+		if (isValidTemperature(kelvin - 273)){
+			setTemperature(kelvin - 273);
+		}
+		else
+			throw new IllegalArgumentException();
+	}
+	
+	/**
+	 * sets the temperature of this Square to the given temperature (in Fahrenheit)
+	 * 
+	 * @param 	degreesCelcius	
+	 * 			the temperature in degrees Fahrenheit
+	 * @throws IllegalArgumentException
+	 * 			throws an IllegalArgumentException if degreesFahrenheit is not valid
+	 * 			|if (! isValidTemperature((degreesFahrenheit-32)*(5.0/9.0)) )
+	 * 			|	then throw IllegalArgumentException
+	 * 
+	 * @post	The temperature of the square is equal to degreesFahrenheit
+	 * 			| new.getTemperatureInFarenheit()== degreesFahrenheit
+	 */
+	@Raw
+	public void setTemperatureFahrenheit(double degreesFahrenheit) throws IllegalArgumentException{
+		if (isValidTemperature((degreesFahrenheit-32)*(5.0/9.0))){
+			setTemperature((degreesFahrenheit-32)*(5.0/9.0));
+		}
+		else
+			throw new IllegalArgumentException();
+	}
+
+	
+	/**
 	 * check whether the given temperature is valid
 	 * 
 	 * @param 	temperature
@@ -137,6 +188,8 @@ public class Square {
 	 * @return	temperature must lie between MIN_TEMP and MAX_TEMP or be equal to MIN_TEMP or MAX_TEMP
 	 * 			| result == (temperature <= MAX_TEMP && temperature >= MIN_TEMP) 
 	 */
+	
+	@Raw
 	public static boolean isValidTemperature(double temperature){
 		return (MIN_TEMP <= temperature && temperature <= MAX_TEMP);
 	}
@@ -230,8 +283,9 @@ public class Square {
 	 * 			| (humidity*100)%1 == 0
 	 * 			the given humidity for this Square
 	 * @return	humidity must lie between 0 and 100 or be equal to 0 or 100
-	 * 			| result == (getHumidity()<= 100 && getHumidity() >= 0) 
+	 * 			| result == (humidity <= 100 && humidity >= 0) 
 	 */
+	@Raw
 	public static boolean isValidHumidity(double humidity){
 		return (humidity<= 100 && humidity >= 0);
 	}
@@ -316,7 +370,6 @@ public class Square {
 	 * 			|	return == borders[0]
 	 * 				
 	 */
-	//TOTAAL
 	@Basic
 	public boolean getBorderInDirection(int direction){
 		if (isValidDirection(direction))
@@ -340,6 +393,7 @@ public class Square {
 	 * 			|if(direction <=0) then
 	 * 			|	return == false
 	 */
+	@Raw
 	public static boolean isValidDirection(int direction){
 		if(direction < 7 && direction > 0)
 			return true;
@@ -366,14 +420,21 @@ public class Square {
 	 * @post	sets the direction in which the squares are merged to false
 	 *  		|	then new.getBorderInDirection(direction) == false &&
 	 *  		|		(new otherSquare).getBorderInDirection(direction) == false
+	 *  
 	 * @post	sets the humidity of both squares to the average humidity of both squares
 	 *  		|		new.getHumidity() = getAverageHumidity(this.getHumidity(),otherSquare.getHumidity()) &&
 	 *  		|		(new otherSquare).getHumidity() = getAverageHumidity(this.getHumidity(),otherSquare.getHumidity())
-	 * @post	sets the temperature of both squares to the new temperature
-	 *  		|		then new.getTemperatureInCelcius =  this.getTemperatureInCelcius() * (1 - mergeConstant) * 
-	 *  		|						(this.getHumidity/(getAverageHumidity(this.getHumidity(), otherSquare.getHumidity()))) + mergeConstant; 
-	 *  		|		(new otherSquare).getTemperatureInCelcius = otherSquare.getTemperatureInCelcius() * (1 - mergeConstant) * 
-	 *  		|						(otherSquare.getHumidity/(getAverageHumidity(this.getHumidity(), otherSquare.getHumidity()))) + mergeConstant; 
+	 *  
+	 * @post	sets the temperature of both squares to the new temperature taken into account the weight, if the humidities are not the same
+	 * 			|		if (this.getHumidity() != other.getHumidity())
+	 *  		|		then new.getTemperatureInCelcius =  this.getTemperatureInCelcius() * (1 - getMergeConstant()) * 
+	 *  		|						(this.getHumidity/(getAverageHumidity(this.getHumidity(), otherSquare.getHumidity()))) + getMergeConstant(); 
+	 *  		|		(new otherSquare).getTemperatureInCelcius = otherSquare.getTemperatureInCelcius() * (1 - getMergeConstant()) * 
+	 *  		|						(otherSquare.getHumidity/(getAverageHumidity(this.getHumidity(), otherSquare.getHumidity()))) + getMergeConstant();
+	 *  
+	 *  @post	sets the temperature of both squares to the new temperature without taken into account the weight, if the humidities are the same
+	 *  		|		if (this.getHumidity() == other.getHumidity())
+	 *  		|		then new.getTemperatureInCelcius = ((this.getTemperatureInCelcius() + otherSquare.getTemperatureInCelcius())/2 )
 	 */
 	public void mergeWithSquareInDirection(Square otherSquare, int direction) throws IllegalArgumentException{
 		
@@ -389,26 +450,77 @@ public class Square {
 		
 		double weightTemperatureOne;
 		double weightTemperatureTwo;
-		if(averageHumidity == 0){
+		
+		if (otherSquare.getHumidity() == this.getHumidity()){
 			weightTemperatureOne = 1;
 			weightTemperatureTwo = 1;	
 		}
 		else {
-		weightTemperatureOne = (a*(this.getHumidity()/averageHumidity)) + mergeConstant;
-		weightTemperatureTwo = (a*(otherSquare.getHumidity()/averageHumidity)) + mergeConstant;	
+			weightTemperatureOne = (a*(this.getHumidity()/averageHumidity)) + mergeConstant;
+			weightTemperatureTwo = (a*(otherSquare.getHumidity()/averageHumidity)) + mergeConstant;	
 		}
 		
 		double newTemperature = (this.getTemperatureInCelcius()*weightTemperatureOne+otherSquare.getTemperatureInCelcius()*weightTemperatureTwo)/2;
+		
+		
 		this.setTemperature(newTemperature);
 		otherSquare.setTemperature(newTemperature);
 		
 		//Makes sure that the new humidity only has two decimal places
-		double roundedAverageHumidity = ((int) (averageHumidity*100))/100;
+		BigDecimal roundUpDecimal = new BigDecimal(averageHumidity);
+		roundUpDecimal.setScale(2, RoundingMode.HALF_UP);
+		double roundedAverageHumidity = roundUpDecimal.doubleValue();
+		
 		this.setHumidity(roundedAverageHumidity);
 		otherSquare.setHumidity(averageHumidity);
 	}
 	
-	public static final double mergeConstant = 0.2;	
+	private static double mergeConstant = 0.2;	
+	
+	/**
+	 * Returns the merge constant of the class
+	 * 
+	 * @return	Returns the merge constant of the class
+	 * 			| result == mergeConstant 
+	 * 
+	 */
+	@Basic
+	public static double getMergeConstant(){
+		return mergeConstant;	
+	}
+	
+	/**
+	 * Sets the new merge constant
+	 * 
+	 * @param	mergeConstant 
+	 * 			The new mergeConstant
+	 * @post	if the mergeConstant is a valid, the new mergeConstant is set to mergeConstant
+	 * 			|if(isValidMergeConstant(mergeConstant))
+	 * 			|	then	new.getMergeConstant() = mergeConstant;
+	 * @post	if the mergeConstant is not valid, the new mergeConstant is set to 0.4
+	 * 			|if(! isValidMergeConstant(mergeConstant)) 
+	 * 			|	then	new.getMergeConstant() = 0.4;
+	 */
+	public static void setMergeConstant(double mergeConstant){
+		if (isValidMergeConstant(mergeConstant))
+			Square.mergeConstant = mergeConstant;
+		else
+			Square.mergeConstant = 0.4;
+	}
+	
+	/**
+	 * Checks if mergeConstant is a valid merge constant
+	 * 
+	 * @param 	mergeConstant
+	 * 			The merge constant
+	 * 
+	 * @return	mergeConstant must lie between 0 and 100 or be equal to 0 or 100
+	 * 			| result == (mergeConstant >= 0.1 && mergeConstant <= 0.4) 
+	 */
+	public static boolean isValidMergeConstant(double mergeConstant){
+		return mergeConstant >= 0.1 && mergeConstant <= 0.4;
+	}
+	
 	
 	/**
 	 * returns the average humidity of two given humidities 
