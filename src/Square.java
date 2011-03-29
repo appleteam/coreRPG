@@ -8,7 +8,7 @@ import be.kuleuven.cs.som.annotate.*;
  * Class to represent the smallest element of a location
  * 
  * @author Ben Lefevere, Karel Domin
- * @version 1.0
+ * @version 2.0
  * 
  * @invar 	getTemperatureInCelcius() must be a valid temperature
  * 			| isValidTemperature(getTemperatureInCelcius())
@@ -345,14 +345,14 @@ public class Square {
 	 * 			the new state of the border
 	 * @post	if the direction is a valid direction then the border in direction 'direction' is set to newBorder
 	 * 			|if(isValidDirection(direction)) 
-	 * 			|	then	new.borders[direction - 1] = newBorder
+	 * 			|	then	new.borders[direction.getDirection()  - 1] = newBorder
 	 * @post	if the direction is not a valid direction then the border in direction '1' is set to newBorder
 	 * 			|if(! isValidDirection(direction)) 
 	 * 			|	then	new.borders[0] = newBorder
 	 */
-	public void setBorderIndirectionTo(int direction, boolean newBorder){
+	public void setBorderIndirectionTo(Direction direction, boolean newBorder){
 		if (isValidDirection(direction)) 
-			borders[direction - 1] = newBorder;
+			borders[direction.getDirection() - 1] = newBorder;
 		else if (! isValidDirection(direction)) 
 			borders[0] = newBorder;
 	}
@@ -364,16 +364,16 @@ public class Square {
 	 * 			the direction 
 	 * @return 	if the direction is a valid direction then return the state of the border in direction 'direction'
 	 * 			| if (isValidDirection(direction)) then
-	 * 			|	return == borders[direction - 1]
+	 * 			|	return == borders[direction.getDirection() - 1]
 	 * @return 	if the direction is not a valid direction then return the state of direction '1'
 	 * 			| if (! isValidDirection(direction)) then
 	 * 			|	return == borders[0]
 	 * 				
 	 */
 	@Basic
-	public boolean getBorderInDirection(int direction){
+	public boolean getBorderInDirection(Direction direction){
 		if (isValidDirection(direction))
-			return  borders[direction - 1];
+			return  borders[direction.getDirection() - 1];
 		else 
 			return  borders[0] ;
 	}
@@ -384,18 +384,18 @@ public class Square {
 	 * @param	direction
 	 * 			the given direction
 	 * @return	if the direction lies between 7 and 0 then return true
-	 * 			|if(direction < 7 && direction > 0) then
+	 * 			|if(direction.getDirection() < 7 && direction.getDirection() > 0) then
 	 * 			|	return == true
 	 * @return	if the direction is larger then 7 return false
-	 * 			|if(direction > 7) then
+	 * 			|if(direction.getDirection() > 7) then
 	 * 			|	return == false
 	 * @return	if the direction equals 0 then return false
-	 * 			|if(direction <=0) then
+	 * 			|if(direction.getDirection() <=0) then
 	 * 			|	return == false
 	 */
 	@Raw
-	public static boolean isValidDirection(int direction){
-		if(direction < 7 && direction > 0)
+	public static boolean isValidDirection(Direction direction){
+		if(direction.getDirection() < 7 && direction.getDirection() > 0)
 			return true;
 		else  
 			return false;
@@ -436,7 +436,7 @@ public class Square {
 	 *  		|		if (this.getHumidity() == other.getHumidity())
 	 *  		|		then new.getTemperatureInCelcius = ((this.getTemperatureInCelcius() + otherSquare.getTemperatureInCelcius())/2 )
 	 */
-	public void mergeWithSquareInDirection(Square otherSquare, int direction) throws IllegalArgumentException{
+	public void mergeWithSquareInDirection(Square otherSquare, Direction direction) throws IllegalArgumentException{
 		
 		if (otherSquare == null || otherSquare == this || (! isValidDirection(direction)))
 				throw new IllegalArgumentException();

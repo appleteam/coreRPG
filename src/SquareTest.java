@@ -137,19 +137,17 @@ public class SquareTest {
 	@Test
 	public final void testSetBorderInDirectionTo(){
 		Square testSquare = new Square();
-		testSquare.setBorderIndirectionTo(0, true);
-		assertTrue(testSquare.getBorderInDirection(1));
-		testSquare.setBorderIndirectionTo(7, true);
-		assertTrue(testSquare.getBorderInDirection(1));
+		testSquare.setBorderIndirectionTo(Direction.FLOOR, true);
+		assertTrue(testSquare.getBorderInDirection(Direction.FLOOR));
 	}
 	
 	@Test
 	public final void testGetBorderInDirection(){
 		Square testSquare = new Square();
-		testSquare.setBorderIndirectionTo(1, true);
-		assertTrue(testSquare.getBorderInDirection(1));
-		testSquare.setBorderIndirectionTo(6, true);
-		assertTrue(testSquare.getBorderInDirection(6));
+		testSquare.setBorderIndirectionTo(Direction.FLOOR, true);
+		assertTrue(testSquare.getBorderInDirection(Direction.FLOOR));
+		testSquare.setBorderIndirectionTo(Direction.CEILING, true);
+		assertTrue(testSquare.getBorderInDirection(Direction.CEILING));
 	}
 	
 	
@@ -157,28 +155,23 @@ public class SquareTest {
 	public final void testMergeWithSquareInDirection(){
 		Square testSquare1 = new Square();
 		Square testSquare2 = new Square();
-		testSquare1.setBorderIndirectionTo(3, true);
-		testSquare2.setBorderIndirectionTo(3, true);
+		testSquare1.setBorderIndirectionTo(Direction.EAST, true);
+		testSquare2.setBorderIndirectionTo(Direction.EAST, true);
 		
-		testSquare1.mergeWithSquareInDirection(testSquare2, 3);
+		testSquare1.mergeWithSquareInDirection(testSquare2, Direction.EAST);
 		
-		assertEquals(false,testSquare1.getBorderInDirection(3));
-		assertEquals(false,testSquare2.getBorderInDirection(3));
+		assertEquals(false,testSquare1.getBorderInDirection(Direction.EAST));
+		assertEquals(false,testSquare2.getBorderInDirection(Direction.EAST));
 
 		try{
-			testSquare1.mergeWithSquareInDirection(testSquare1, 1);
+			testSquare1.mergeWithSquareInDirection(testSquare1, Direction.CEILING);
 			fail("Expected IllegalArgumentException");
 		} catch(IllegalArgumentException expected) {}
 		
 		try{
-			testSquare1.mergeWithSquareInDirection(null, 1);
+			testSquare1.mergeWithSquareInDirection(null, Direction.CEILING);
 			fail("Expected IllegalArgumentException");
 		} catch(IllegalArgumentException expected) {}
-		try{
-			testSquare1.mergeWithSquareInDirection(testSquare2, 7);
-			fail("Expected IllegalArgumentException");
-		} catch(IllegalArgumentException expected) {}
-
 		
 	}
 	

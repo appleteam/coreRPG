@@ -6,21 +6,21 @@ public class Game {
 		
 		Square square1 = new Square(150.00,59.01);
 		square1.isSlipperySurface = true;
-		square1.setBorderIndirectionTo(1, true);
-		square1.setBorderIndirectionTo(2, true);
-		square1.setBorderIndirectionTo(3, true);
+		square1.setBorderIndirectionTo(Direction.FLOOR, true);
+		square1.setBorderIndirectionTo(Direction.NORTH, true);
+		square1.setBorderIndirectionTo(Direction.EAST, true);
 		
 		printSquare(square1);
 		
 		Square square2 = new Square(40.00,89.90);
 		square2.isSlipperySurface = false;
-		square2.setBorderIndirectionTo(2, true);
-		square2.setBorderIndirectionTo(3, true);
-		square2.setBorderIndirectionTo(4, true);
+		square2.setBorderIndirectionTo(Direction.NORTH, true);
+		square2.setBorderIndirectionTo(Direction.EAST, true);
+		square2.setBorderIndirectionTo(Direction.SOUTH, true);
 		
 		printSquare(square2);
 		
-		square1.mergeWithSquareInDirection(square2, 2);
+		square1.mergeWithSquareInDirection(square2, Direction.NORTH);
 		
 		printSquare(square1);
 		printSquare(square2);
@@ -38,7 +38,7 @@ public class Game {
 			System.out.println("\nSquare does not have a slippery surface\n");
 		
 		for (int i = 1; i<7;i++){
-			if (square.getBorderInDirection(i) == true){
+			if (square.getBorderInDirection(Direction.values()[i-1]) == true){
 				System.out.println("Square has a border in direction " + i);
 			}
 			else{
