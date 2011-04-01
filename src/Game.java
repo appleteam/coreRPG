@@ -1,10 +1,11 @@
+import java.math.BigDecimal;
+
 
 public class Game {
 	
 	public static void main(String[] args) {
 		
-		
-		Square square1 = new Square(150.00,59.01);
+		Square square1 = new Square(new Temperature(150.00, TemperatureScales.CELCIUS),new BigDecimal(59.01));
 		square1.isSlipperySurface = true;
 		square1.setBorderIndirectionTo(Direction.FLOOR, true);
 		square1.setBorderIndirectionTo(Direction.NORTH, true);
@@ -12,7 +13,7 @@ public class Game {
 		
 		printSquare(square1);
 		
-		Square square2 = new Square(40.00,89.90);
+		Square square2 = new Square(new Temperature(40.00, TemperatureScales.CELCIUS),new BigDecimal(89.90));
 		square2.isSlipperySurface = false;
 		square2.setBorderIndirectionTo(Direction.NORTH, true);
 		square2.setBorderIndirectionTo(Direction.EAST, true);
@@ -29,8 +30,8 @@ public class Game {
 	
 	public static void printSquare(Square square){
 		
-		System.out.println("\nThe temperature of the square " + square.getTemperatureInCelcius());
-		System.out.println("The humidity of the square " + square.getHumidity());
+		System.out.println("\nThe temperature of the square " + square.getTemperature().temperature);
+		System.out.println("The humidity of the square " + square.getHumidity().doubleValue());
 		
 		if(square.isSlipperySurface == true)
 			System.out.println("\nSquare has a slippery surface\n");

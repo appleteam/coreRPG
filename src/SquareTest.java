@@ -10,71 +10,71 @@ public class SquareTest {
 	public final void TestSetTemperature() throws Exception{
 		Square testSquare = new Square();
 		try{
-			testSquare.setTemperature(-201);
-			System.out.println(testSquare.getTemperatureInCelcius());
+			testSquare.setTemperature(new Temperature(-201.00, TemperatureScales.CELCIUS));
+			System.out.println(testSquare.getTemperature().temperature);
 			fail("Expected IllegalArgumentException");
 		} catch(IllegalArgumentException expected) {}
-		testSquare.setTemperature(-200);
-		assertEquals(-200,testSquare.getTemperatureInCelcius(),0);
-		testSquare.setTemperature(0);
-		assertEquals(0,testSquare.getTemperatureInCelcius(),0);
-		testSquare.setTemperature(100);
-		assertEquals(100,testSquare.getTemperatureInCelcius(),0);
-		testSquare.setTemperature(5000);
-		assertEquals(5000,testSquare.getTemperatureInCelcius(),0);
+		testSquare.setTemperature(new Temperature(-200, TemperatureScales.CELCIUS));
+		assertEquals(-200,testSquare.getTemperature().temperature,0);
+		testSquare.setTemperature(new Temperature(0, TemperatureScales.CELCIUS));
+		assertEquals(0,testSquare.getTemperature().temperature,0);
+		testSquare.setTemperature(new Temperature(100, TemperatureScales.CELCIUS));
+		assertEquals(100,testSquare.getTemperature().temperature,0);
+		testSquare.setTemperature(new Temperature(5000, TemperatureScales.CELCIUS));
+		assertEquals(5000,testSquare.getTemperature().temperature,0);
 		try{
-			testSquare.setTemperature(5001);
+			testSquare.setTemperature(new Temperature(5001, TemperatureScales.CELCIUS));
 			fail("Expected IllegalArgumentException");
 		} catch(IllegalArgumentException expected) {}
 	}
 	
 	@Test
 	public final void testGetTemperatureInKelvin(){
-		Square testSquare = new Square(-200,0);
-		assertEquals(73, testSquare.getTemperatureInKelvin(),0);
-		testSquare.setTemperatureKelvin(5000);
-		assertEquals(5000, testSquare.getTemperatureInKelvin(),0);
+		Square testSquare = new Square(new Temperature(-200, TemperatureScales.CELCIUS),0);
+		assertEquals(73, Temperature.convertToKelvin(testSquare.getTemperature()).temperature,0);
+		testSquare.setTemperature(new Temperature(5000, TemperatureScales.KELVIN));
+		assertEquals(5000, testSquare.getTemperature().temperature,0);
 	}
 	
 	@Test
 	public final void testGetTemperatureInFahrenheit(){
-		Square testSquare = new Square(-200,0);
-		assertEquals(((-200*9)/5) + 32, testSquare.getTemperatureInFarenheit(),0.01);
-		testSquare.setTemperatureFahrenheit(9032);
-		assertEquals(9032, testSquare.getTemperatureInFarenheit(),0.01);
+		Square testSquare = new Square(new Temperature(-200, TemperatureScales.CELCIUS),0);
+		assertEquals(((-200*9)/5) + 32, Temperature.convertToFahrenheit(testSquare.getTemperature()).temperature,0.01);
+		testSquare.setTemperature(new Temperature(9032, TemperatureScales.FAHRENHEIT));
+		assertEquals(9032, testSquare.getTemperature().temperature,0.01);
 	}
 	
 	@Test
 	public final void testGetColdDamage(){
 		Square testSquare = new Square();
-		testSquare.setTemperature(-15);
+		testSquare.setTemperature(new Temperature(-15, TemperatureScales.CELCIUS));
 		assertEquals(1,testSquare.getColdDamage(),0);
-		testSquare.setTemperature(-5);
+		testSquare.setTemperature(new Temperature(-5, TemperatureScales.CELCIUS));
 		assertEquals(0,testSquare.getColdDamage(),0);
-		testSquare.setTemperature(-57);
+		testSquare.setTemperature(new Temperature(-57, TemperatureScales.CELCIUS));
 		assertEquals(5,testSquare.getColdDamage(),0);
-		testSquare.setTemperature(-200);
+		testSquare.setTemperature(new Temperature(-200, TemperatureScales.CELCIUS));
 		assertEquals(19,testSquare.getColdDamage(),0);
-		testSquare.setTemperature(2000);
+		testSquare.setTemperature(new Temperature(5000, TemperatureScales.CELCIUS));
 		assertEquals(0,testSquare.getColdDamage(),0);
-		testSquare.setTemperature(5000);
+		testSquare.setTemperature(new Temperature(5000, TemperatureScales.CELCIUS));
 		assertEquals(0,testSquare.getColdDamage(),0);
 	}
 	
 	@Test
 	public final void testHeatDamage(){
 		Square testSquare = new Square();
-		testSquare.setTemperature(35);
+		testSquare.setTemperature(new Temperature(35, TemperatureScales.CELCIUS));
 		assertEquals(0,testSquare.getHeatDamage(),0);
-		testSquare.setTemperature(50);
+		testSquare.setTemperature(new Temperature(50, TemperatureScales.CELCIUS));
 		assertEquals(1,testSquare.getHeatDamage(),0);
-		testSquare.setTemperature(-50);
+		testSquare.setTemperature(new Temperature(-50, TemperatureScales.CELCIUS));
 		assertEquals(0,testSquare.getHeatDamage(),0);
-		testSquare.setTemperature(-200);
+		testSquare.setTemperature(new Temperature(-200, TemperatureScales.CELCIUS));
 		assertEquals(0,testSquare.getHeatDamage(),0);
-		testSquare.setTemperature(200);
+		testSquare.setTemperature(new Temperature(200.00, TemperatureScales.CELCIUS));
 		assertEquals(11,testSquare.getHeatDamage(),0);
-		testSquare.setTemperature(5000);
+		testSquare.setTemperature(new Temperature(5000, TemperatureScales.CELCIUS));
 		assertEquals(331,testSquare.getHeatDamage(),0);
 	}
 	
@@ -110,27 +110,27 @@ public class SquareTest {
 		testSquare.isSlipperySurface = false;
 		assertFalse(testSquare.isSlippery());
 		testSquare.setHumidity(100);
-		testSquare.setTemperature(0);
+		testSquare.setTemperature(new Temperature(0, TemperatureScales.CELCIUS));
 		assertTrue(testSquare.isSlippery());
 		testSquare.setHumidity(100);
-		testSquare.setTemperature(1);
+		testSquare.setTemperature(new Temperature(1, TemperatureScales.CELCIUS));
 		assertTrue(testSquare.isSlippery());
 		testSquare.setHumidity(100);
-		testSquare.setTemperature(-200);
+		testSquare.setTemperature(new Temperature(-200, TemperatureScales.CELCIUS));
 		assertTrue(testSquare.isSlippery());
 		testSquare.setHumidity(100);
-		testSquare.setTemperature(5000);
+		testSquare.setTemperature(new Temperature(5000, TemperatureScales.CELCIUS));
 		assertTrue(testSquare.isSlippery());
 		testSquare.setHumidity(80);
-		testSquare.setTemperature(0);
+		testSquare.setTemperature(new Temperature(0, TemperatureScales.CELCIUS));
 		assertTrue(testSquare.isSlippery());
-		testSquare.setTemperature(1);
+		testSquare.setTemperature(new Temperature(1.00, TemperatureScales.CELCIUS));
 		assertFalse(testSquare.isSlippery());
 		testSquare.setHumidity(10);
-		testSquare.setTemperature(-1);
+		testSquare.setTemperature(new Temperature(-1, TemperatureScales.CELCIUS));
 		assertFalse(testSquare.isSlippery());
 		testSquare.setHumidity(11);
-		testSquare.setTemperature(-1);
+		testSquare.setTemperature(new Temperature(-1, TemperatureScales.CELCIUS));
 		assertTrue(testSquare.isSlippery());
 	}
 	
@@ -180,13 +180,13 @@ public class SquareTest {
 		Square testSquare = new Square();
 		assertEquals(0,testSquare.getInhabitability(),0.01);
 		testSquare.setHumidity(100);
-		testSquare.setTemperature(-200);
+		testSquare.setTemperature(new Temperature(-200.00, TemperatureScales.CELCIUS));
 		assertEquals(-4.359,testSquare.getInhabitability(),0.01);
 		testSquare.setHumidity(0);
-		testSquare.setTemperature(5000);
+		testSquare.setTemperature(new Temperature(5000, TemperatureScales.CELCIUS));
 		assertEquals(-599.213,testSquare.getInhabitability(),0.01);
 		testSquare.setHumidity(25);
-		testSquare.setTemperature(612);
+		testSquare.setTemperature(new Temperature(612, TemperatureScales.CELCIUS));
 		assertEquals(-26.87,testSquare.getInhabitability(),0.01);
 	}
 	

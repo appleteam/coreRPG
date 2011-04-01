@@ -29,7 +29,8 @@ public class Square {
 	 */
 	
 	public Square(){
-		;
+		this.humidity = new BigDecimal(0.00);
+		this.temperature = new Temperature(0, TemperatureScales.CELCIUS);
 	}
 	
 	/**
@@ -41,14 +42,14 @@ public class Square {
 	 * @param 	humidity
 	 * 			the humidity of this new Square 
 	 * @throws	
-	 * 			| if( (!isValidTemperature(temperature) || (!isValidTemperature(humidity))
+	 * 			| if((!isValidTemperature(temperature) || (!isValidTemperature(humidity))
 	 * 			| 	then throws IllegalArgumentException
 	 * @Post	the temperature of this new Square is equal to temperature
 	 * 			| new.getTemperatureInCelcius() == temperature
 	 * @Post	the humidity of this new Square is equal to humidity
 	 * 			| new.getHumidity() == humidity
 	 */
-	public Square(double temperature, double humidity) throws IllegalArgumentException{
+	public Square(Temperature temperature, BigDecimal humidity) throws IllegalArgumentException{
 		if((!isValidTemperature(temperature)) || (!isValidHumidity(humidity)))
 				throw new IllegalArgumentException();
 		this.temperature = temperature;
@@ -56,181 +57,92 @@ public class Square {
 	}
 	
 	/**
-	 * gives the temperature of the Square in degrees Celcius
+	 * gives the temperature of the Square
 	 *
-	 * @return	The temperature of the square in degrees Celcius
+	 * @return	The temperature of the square
 	 * 			| result == temperature
 	 */
 	@Basic
-	public double getTemperatureInCelcius(){
+	public Temperature getTemperature(){
 		return temperature;
-	}
-	
-	/**
-	 * gives the temperature of the Square in Kelvin
-	 *
-	 * @return	The temperature of the square in Kelvin
-	 * 			| result == celciusToKelvin(getTemperatureInCelcius())
-	 */
-	
-	public double getTemperatureInKelvin(){
-		return celciusToKelvin(getTemperatureInCelcius());
-	}
-	
-	/**
-	 * gives the temperature of the Square in degrees Farenheit
-	 *
-	 * @return	The temperature of the square in degrees Farenheit
-	 * 			| result == celciusToFarenheit(getTemperatureInCelcius())
-	 */
-
-	
-	public double getTemperatureInFarenheit(){
-		return celciusToFarenheit(getTemperatureInCelcius());
-	}
-	
-	/**
-	 * converts the temperature from degrees Celcius to Farenheit
-	 * 
-	 * @param 	degreesCelcius
-	 * 			the temperature to be converted in degrees Celcius
-	 * @return	returns the temperature converted to degrees Farenheit
-	 * 			| result == ((degreesCelcius*9)/5) + 32
-	 */
-	public double celciusToFarenheit (double degreesCelcius){
-		return ((degreesCelcius*9.0)/5.0) + 32.0;
-	}
-	
-	/**
-	 * converts the temperature from degrees Celcius to Kelvin
-	 * 
-	 * @param	degreesCelcius
-	 * 			the temperature to be converted in degrees Celcius
-	 * @return 	returns the temperature converted to Kelvin
-	 * 			| result == degreesCelcius + 273
-	 */
-	public double celciusToKelvin (double degreesCelcius){
-		return degreesCelcius + 273;
 	}
 	
 	/**
 	 * sets the temperature of this Square to the given temperature
 	 * 
-	 * @param 	degreesCelcius	
-	 * 			the temperature in degrees Celcius
+	 * @param 	temperature	
+	 * 			the temperature
 	 * @throws IllegalArgumentException
-	 * 			throws an IllegalArgumentException if degreesCelcius is not valid
-	 * 			|if (! isValidTemperature(degreesCelcius)) 
+	 * 			throws an IllegalArgumentException if temperature is not valid
+	 * 			|if (! isValidTemperature(temperature)) 
 	 * 			|	then throw IllegalArgumentException
 	 * 
-	 * @post	The temperature of the square is equal to degreesCelcius
-	 * 			| new.getTemperatureInCelcius()== degreesCelcius
+	 * @post	The temperature of the square is equal to temperature
+	 * 			| new.getTemperature()== temperature
 	 */
 	
-	public void setTemperature(double degreesCelcius) throws IllegalArgumentException{
-		if (isValidTemperature(degreesCelcius)){
-			temperature = degreesCelcius;
+	public void setTemperature(Temperature temperature) throws IllegalArgumentException{
+		if (isValidTemperature(temperature)){
+			this.temperature = temperature;
 		}
 		else
 			throw new IllegalArgumentException();
 	}
-	
-	/**
-	 * sets the temperature of this Square to the given temperature (in Kelvin)
-	 * 
-	 * @param 	kelvin
-	 * 			the temperature in degrees Kelvin
-	 * @throws IllegalArgumentException
-	 * 			throws an IllegalArgumentException if degreesKelvin is not valid
-	 * 			|if (! isValidTemperature(kelvin - 273)) 
-	 * 			|	then throw IllegalArgumentException
-	 * 
-	 * @post	The temperature of the square is equal to kelvin
-	 * 			| new.getTemperatureInKelvin()== kelvin
-	 */
-	@Raw
-	public void setTemperatureKelvin(double kelvin) throws IllegalArgumentException{
-		if (isValidTemperature(kelvin - 273)){
-			setTemperature(kelvin - 273);
-		}
-		else
-			throw new IllegalArgumentException();
-	}
-	
-	/**
-	 * sets the temperature of this Square to the given temperature (in Fahrenheit)
-	 * 
-	 * @param 	degreesCelcius	
-	 * 			the temperature in degrees Fahrenheit
-	 * @throws IllegalArgumentException
-	 * 			throws an IllegalArgumentException if degreesFahrenheit is not valid
-	 * 			|if (! isValidTemperature((degreesFahrenheit-32)*(5.0/9.0)) )
-	 * 			|	then throw IllegalArgumentException
-	 * 
-	 * @post	The temperature of the square is equal to degreesFahrenheit
-	 * 			| new.getTemperatureInFarenheit()== degreesFahrenheit
-	 */
-	@Raw
-	public void setTemperatureFahrenheit(double degreesFahrenheit) throws IllegalArgumentException{
-		if (isValidTemperature((degreesFahrenheit-32)*(5.0/9.0))){
-			setTemperature((degreesFahrenheit-32)*(5.0/9.0));
-		}
-		else
-			throw new IllegalArgumentException();
-	}
-
 	
 	/**
 	 * check whether the given temperature is valid
 	 * 
 	 * @param 	temperature
-	 * 			the temperature in degrees Celcius
+	 * 			the temperature
 	 * @return	temperature must lie between MIN_TEMP and MAX_TEMP or be equal to MIN_TEMP or MAX_TEMP
-	 * 			| result == (temperature <= MAX_TEMP && temperature >= MIN_TEMP) 
+	 * 			| result == (temperature != null && MIN_TEMP.temperature <= Temperature.convertToCelcius(temperature).temperature 
+				|		&& Temperature.convertToCelcius(temperature).temperature <= MAX_TEMP.temperature) 
 	 */
 	
 	@Raw
-	public static boolean isValidTemperature(double temperature){
-		return (MIN_TEMP <= temperature && temperature <= MAX_TEMP);
+	public static boolean isValidTemperature(Temperature temperature){
+		return (temperature != null && MIN_TEMP.temperature <= Temperature.convertToCelcius(temperature).temperature 
+				&& Temperature.convertToCelcius(temperature).temperature <= MAX_TEMP.temperature);
 	}
 	
-	private double temperature;
+	private Temperature temperature;
 	
-	public final static double MIN_TEMP = -200.00;
-	public final static double MAX_TEMP = 5000.00;
+	public final static Temperature MIN_TEMP = new Temperature(-200.00, TemperatureScales.CELCIUS);
+	public final static Temperature MAX_TEMP = new Temperature(5000.00, TemperatureScales.CELCIUS);
 	
 	
 	/**
 	 * returns the cold damage for this Square
 	 * 
 	 * @return	If the temperature is higher than -15 degrees Celcius, return 0
-	 * 			| if (getTemperatureInCelcius() > -15)
+	 * 			| if (Temperature.convertToCelcius(getTemperature()).temperature > -15)
 	 * 			|	result == 0
 	 * @return	If temperature is equal or below -15 degrees Celcius, return the number of points lost due to cold damage
 	 * 			| If (getTemperatureInCelcius() <= -15)
-	 * 			|	then result == (int) Math.abs((5.0 + getTemperatureInCelcius())/10) 
+	 * 			|	then result == (int) Math.abs((5.0 + Temperature.convertToCelcius(getTemperature()).temperature)/10) 
 	 */
 	public int getColdDamage(){
-		if (getTemperatureInCelcius() > -15)
+		if (Temperature.convertToCelcius(getTemperature()).temperature > -15)
 			return 0;
 		
-		return (int) Math.abs((5.0 + getTemperatureInCelcius())/10) ;
+		return (int) Math.abs((5.0 + Temperature.convertToCelcius(getTemperature()).temperature )/10) ;
 	}
 	
 	/**
 	 * returns the heat damage for this Square
 	 * 
 	 * @return	If the temperature is lower than 50 degrees Celcius, return 0
-	 * 			| if (getTemperatureInCelcius() < 50)
+	 * 			| if (Temperature.convertToCelcius(getTemperature()).temperature < 50)
 	 * 			|	result == 0
 	 * @return	If temperature is equal or higher than 50 degrees Celcius, return the number of points lost due to heat damage
 	 * 			| If (getTemperatureInCelcius() >= 50)
-	 * 			|	then result == (int) ((getTemperatureInCelcius() - 35)/15)
+	 * 			|	then result == (int) ((Temperature.convertToCelcius(getTemperature()).temperature - 35)/15)
 	 */
+	// change doc
 	public int getHeatDamage(){
-		if (getTemperatureInCelcius() < 50)
+		if (Temperature.convertToCelcius(getTemperature()).temperature  < 50)
 			return 0;
-		return (int) ((getTemperatureInCelcius() - 35)/15);
+		return (int) ((Temperature.convertToCelcius(getTemperature()).temperature - 35)/15);
 	}
 	
 	/**
@@ -242,11 +154,16 @@ public class Square {
 	 * 
 	 */
 	public int getRustDamage(){
-		if ( getHumidity() >= 37.00)
-			 return (int) ((getHumidity() - 30)/7);
+		if ( getHumidity().compareTo(RUST_DAMAGE_CONST) >= 0)
+			 return (((getHumidity().subtract(RUST_DAMAGE_CONST2))).divide(RUST_DAMAGE_CONST3)).intValue();
 		return 0;
 	}
 	
+	public final static BigDecimal RUST_DAMAGE_CONST = new BigDecimal(37.00);
+	public final static BigDecimal RUST_DAMAGE_CONST2 = new BigDecimal(30.00);
+	public final static BigDecimal RUST_DAMAGE_CONST3 = new BigDecimal(7.00);
+
+
 	/**
 	 * returns the humidity of this Square
 	 * 
@@ -255,9 +172,11 @@ public class Square {
 	 * 
 	 */
 	@Basic
-	public double getHumidity(){
+	public BigDecimal getHumidity(){
 		return humidity;
 	}
+	
+	
 	
 	/**
 	 * sets the humidity of this Square to a given humidity 
@@ -269,7 +188,7 @@ public class Square {
 	 * @post	percent is the new humidity
 	 * 			|	new.getHumidity() == percent
 	 */
-	public void setHumidity(double humidity){
+	public void setHumidity(BigDecimal humidity){
 		assert isValidHumidity(humidity);	
 		this.humidity = humidity;
 	}
@@ -286,12 +205,14 @@ public class Square {
 	 * 			| result == (humidity <= 100 && humidity >= 0) 
 	 */
 	@Raw
-	public static boolean isValidHumidity(double humidity){
-		return (humidity<= 100 && humidity >= 0);
+	public static boolean isValidHumidity(BigDecimal humidity){
+		return (humidity.compareTo(MAX_HUMIDITY) <= 0 && humidity.compareTo(MIN_HUMIDITY)>=0);
 	}
 	
-	private double humidity;
-	
+	private BigDecimal humidity;
+	public final static BigDecimal MIN_HUMIDITY = new BigDecimal(0.00);
+	public final static BigDecimal MAX_HUMIDITY = new BigDecimal(100.00);
+
 	/**
 	 * return whether this Square is slippery or not
 	 * 
@@ -299,14 +220,16 @@ public class Square {
 	 * 				the humidity is 100 and the temperature is higher than zero OR
 	 * 				the humidity is higher than 10 and the temperature is zero or below
 	 * 			| return == (isSlipperySurface || 
-	 * 							(getHumidity() == 100 && getTemperatureInCelcius() > 0) ||
-	 * 							(getHumidity() > 10 && getTemperatureInCelcius() <= 0)) 
+	 * 							(getHumidity() == 100 && Temperature.convertToCelcius(getTemperature()).temperature > 0) ||
+	 * 							(getHumidity() > 10 && Temperature.convertToCelcius(getTemperature()).temperature <= 0)) 
 	 */
 	public boolean isSlippery(){
 		return (isSlipperySurface || 
-				(getHumidity() == 100 && getTemperatureInCelcius() > 0) ||
-				 (getHumidity() > 10 && getTemperatureInCelcius() <= 0));
+				((getHumidity().compareTo(MAX_HUMIDITY) == 0) && Temperature.convertToCelcius(getTemperature()).temperature > 0) ||
+				 ((getHumidity().compareTo(SLIPPERY_HUMIDITY) >0)  && Temperature.convertToCelcius(getTemperature()).temperature <= 0));
 	}
+	
+	public final static BigDecimal SLIPPERY_HUMIDITY = new BigDecimal(10.00);
 	
 	public boolean isSlipperySurface;
 	
@@ -317,24 +240,32 @@ public class Square {
 	 * 				| result == (-1)* (Math.sqrt(Math.pow(getHeatDamage(),3)) / Math.sqrt(101-getHumidity()))
 	 * 				|			- Math.sqrt(getColdDamage()) 
 	 */
-	public double getInhabitability(){
+	// change doc and fucking code
+	public BigDecimal getInhabitability(){
 		double tempInhabilityHeat = getHeatDamage();
 		double tempInhabilityCold = getColdDamage();
-		double tempInhabilityHumidity = getHumidity();
+		BigDecimal tempInhabilityHumidity = getHumidity();
 		
 		tempInhabilityHeat = Math.pow(tempInhabilityHeat, 3);
 		tempInhabilityHeat= Math.sqrt(tempInhabilityHeat);
 		
 		tempInhabilityCold = Math.sqrt(tempInhabilityCold);
 		
-		tempInhabilityHumidity = 101 - tempInhabilityHumidity;
-		tempInhabilityHumidity = Math.sqrt(tempInhabilityHumidity);
-		
-		return (-1)*(tempInhabilityHeat/tempInhabilityHumidity) - tempInhabilityCold;
+		tempInhabilityHumidity = (HUMIDITY_CONSTANT.subtract(tempInhabilityHumidity));
+		tempInhabilityHumidity = new BigDecimal(Math.sqrt((tempInhabilityHumidity).doubleValue()));
+		//tempInhabilityHumidity = tempInhabilityHumidity.pow(0.5);
+		BigDecimal tempInhabilityHeatBigDecimal = new BigDecimal(tempInhabilityHeat);
+		BigDecimal tempInhabilityColdBigDecimal = new BigDecimal(tempInhabilityCold);
+		return ((tempInhabilityHeatBigDecimal.divide(tempInhabilityHumidity)).subtract(tempInhabilityColdBigDecimal)
+				.multiply((BigDecimal.ONE).negate()));
 		
 	}
+	public final static BigDecimal HUMIDITY_CONSTANT = new BigDecimal(101);
+	public final static int MIN_DIRECTION = 1;
+	public final static int MAX_DIRECTION = 6;
 	
-	private final boolean[] borders = new boolean[6];
+	
+	private final boolean[] borders = new boolean[MAX_DIRECTION];
 	
 	/**
 	 * sets a new border in a given direction of this Square
@@ -353,7 +284,7 @@ public class Square {
 	public void setBorderIndirectionTo(Direction direction, boolean newBorder){
 		if (isValidDirection(direction)) 
 			borders[direction.getDirection() - 1] = newBorder;
-		else if (! isValidDirection(direction)) 
+		else
 			borders[0] = newBorder;
 	}
 	
@@ -383,27 +314,24 @@ public class Square {
 	 * 
 	 * @param	direction
 	 * 			the given direction
-	 * @return	if the direction lies between 7 and 0 then return true
-	 * 			|if(direction.getDirection() < 7 && direction.getDirection() > 0) then
+	 * @return	if the direction lies between MAX_DIRECTION+1 and MIN_DIRECTION-1 then return true
+	 * 			|if(direction.getDirection() < MAX_DIRECTION+1 && direction.getDirection() > MIN_DIRECTION-1) then
 	 * 			|	return == true
-	 * @return	if the direction is larger then 7 return false
-	 * 			|if(direction.getDirection() > 7) then
+	 * @return	if the direction is larger then MAX_DIRECTION return false
+	 * 			|if(direction.getDirection() > MAX_DIRECTION) then
 	 * 			|	return == false
-	 * @return	if the direction equals 0 then return false
-	 * 			|if(direction.getDirection() <=0) then
+	 * @return	if the direction equals MIN_DIRECTION-1 then return false
+	 * 			|if(direction.getDirection() <= MIN_DIRECTION-1) then
 	 * 			|	return == false
 	 */
 	@Raw
 	public static boolean isValidDirection(Direction direction){
-		if(direction.getDirection() < 7 && direction.getDirection() > 0)
+		if(direction.getDirection() < MAX_DIRECTION+1 && direction.getDirection() > MIN_DIRECTION-1)
 			return true;
 		else  
 			return false;
 	}
 	
-	
-	
-
 	/**
 	 * merges this Square with another Square in a given direction 
 	 * 
@@ -427,15 +355,16 @@ public class Square {
 	 *  
 	 * @post	sets the temperature of both squares to the new temperature taken into account the weight, if the humidities are not the same
 	 * 			|		if (this.getHumidity() != other.getHumidity())
-	 *  		|		then new.getTemperatureInCelcius =  this.getTemperatureInCelcius() * (1 - getMergeConstant()) * 
-	 *  		|						(this.getHumidity/(getAverageHumidity(this.getHumidity(), otherSquare.getHumidity()))) + getMergeConstant(); 
-	 *  		|		(new otherSquare).getTemperatureInCelcius = otherSquare.getTemperatureInCelcius() * (1 - getMergeConstant()) * 
-	 *  		|						(otherSquare.getHumidity/(getAverageHumidity(this.getHumidity(), otherSquare.getHumidity()))) + getMergeConstant();
+	 *  		|		then new.getTemperature =   
+	 *  		|		(new otherSquare).getTemperature = 
 	 *  
 	 *  @post	sets the temperature of both squares to the new temperature without taken into account the weight, if the humidities are the same
 	 *  		|		if (this.getHumidity() == other.getHumidity())
-	 *  		|		then new.getTemperatureInCelcius = ((this.getTemperatureInCelcius() + otherSquare.getTemperatureInCelcius())/2 )
+	 *  		|		then new.getTemperature =
+	 *  		|				(new otherSquare).getTemperature =  
 	 */
+	// check bigdecimals and change doc
+	// toDoubleValue() ???
 	public void mergeWithSquareInDirection(Square otherSquare, Direction direction) throws IllegalArgumentException{
 		
 		if (otherSquare == null || otherSquare == this || (! isValidDirection(direction)))
@@ -444,7 +373,7 @@ public class Square {
 		this.setBorderIndirectionTo(direction, false);
 		otherSquare.setBorderIndirectionTo(direction, false);
 		
-		double averageHumidity = getAverageHumidity(this.getHumidity(), otherSquare.getHumidity());	
+		BigDecimal averageHumidity = getAverageHumidity(this.getHumidity(), otherSquare.getHumidity());	
 		
 		double a = 1 - mergeConstant; 	
 		
@@ -456,26 +385,31 @@ public class Square {
 			weightTemperatureTwo = 1;	
 		}
 		else {
-			weightTemperatureOne = (a*(this.getHumidity()/averageHumidity)) + mergeConstant;
-			weightTemperatureTwo = (a*(otherSquare.getHumidity()/averageHumidity)) + mergeConstant;	
+			weightTemperatureOne = (a*((this.getHumidity().doubleValue())/(averageHumidity).doubleValue())) + mergeConstant;
+			weightTemperatureTwo = (a*((otherSquare.getHumidity().doubleValue())/(averageHumidity.doubleValue()))) + mergeConstant;	
 		}
 		
-		double newTemperature = (this.getTemperatureInCelcius()*weightTemperatureOne+otherSquare.getTemperatureInCelcius()*weightTemperatureTwo)/2;
+		double newTemperature = (Temperature.convertToCelcius(this.getTemperature()).temperature *weightTemperatureOne + 
+				Temperature.convertToCelcius(otherSquare.getTemperature()).temperature *weightTemperatureTwo)/2;
 		
 		
-		this.setTemperature(newTemperature);
-		otherSquare.setTemperature(newTemperature);
+		this.setTemperature(new Temperature(newTemperature, TemperatureScales.CELCIUS));
+		otherSquare.setTemperature(new Temperature(newTemperature, TemperatureScales.CELCIUS));
 		
 		//Makes sure that the new humidity only has two decimal places
-		BigDecimal roundUpDecimal = new BigDecimal(averageHumidity);
-		roundUpDecimal.setScale(2, RoundingMode.HALF_UP);
-		double roundedAverageHumidity = roundUpDecimal.doubleValue();
+		// change doc
+		BigDecimal roundUpDecimal = averageHumidity;
+		roundUpDecimal = roundUpDecimal.setScale(2, RoundingMode.HALF_UP);
 		
-		this.setHumidity(roundedAverageHumidity);
-		otherSquare.setHumidity(averageHumidity);
+		this.setHumidity(roundUpDecimal);
+		otherSquare.setHumidity(roundUpDecimal);
+	
 	}
 	
-	private static double mergeConstant = 0.2;	
+	private static double mergeConstant = 0.2;
+	
+	public static double MIN_MERGECONSTANT = 0.1;
+	public static double MAX_MERGECONSTANT = 0.4;
 	
 	/**
 	 * Returns the merge constant of the class
@@ -497,15 +431,15 @@ public class Square {
 	 * @post	if the mergeConstant is a valid, the new mergeConstant is set to mergeConstant
 	 * 			|if(isValidMergeConstant(mergeConstant))
 	 * 			|	then	new.getMergeConstant() = mergeConstant;
-	 * @post	if the mergeConstant is not valid, the new mergeConstant is set to 0.4
+	 * @post	if the mergeConstant is not valid, the new mergeConstant is set to MAX_MERGECONSTANT
 	 * 			|if(! isValidMergeConstant(mergeConstant)) 
-	 * 			|	then	new.getMergeConstant() = 0.4;
+	 * 			|	then	new.getMergeConstant() = MAX_MERGECONSTANT;
 	 */
 	public static void setMergeConstant(double mergeConstant){
 		if (isValidMergeConstant(mergeConstant))
 			Square.mergeConstant = mergeConstant;
 		else
-			Square.mergeConstant = 0.4;
+			Square.mergeConstant = MAX_MERGECONSTANT;
 	}
 	
 	/**
@@ -514,11 +448,12 @@ public class Square {
 	 * @param 	mergeConstant
 	 * 			The merge constant
 	 * 
-	 * @return	mergeConstant must lie between 0 and 100 or be equal to 0 or 100
-	 * 			| result == (mergeConstant >= 0.1 && mergeConstant <= 0.4) 
+	 * @return	mergeConstant must lie between MIN_MERGECONSTANT and MAX_MERGECONSTANT 
+	 * 					or be equal to MIN_MERGECONSTANT or MAX_MERGECONSTANT
+	 * 			| result == (mergeConstant >= MIN_MERGECONSTANT && mergeConstant <= MAX_MERGECONSTANT) 
 	 */
 	public static boolean isValidMergeConstant(double mergeConstant){
-		return mergeConstant >= 0.1 && mergeConstant <= 0.4;
+		return mergeConstant >= MIN_MERGECONSTANT && mergeConstant <= MAX_MERGECONSTANT;
 	}
 	
 	
@@ -533,9 +468,11 @@ public class Square {
 	 * 			|	result == (humidity1+humidty2)/2
 	 * 			
 	 */
-	public double getAverageHumidity(double humidity1,double humidty2){
-		return (humidity1+humidty2)/2;
+	// change doc 
+	public BigDecimal getAverageHumidity(BigDecimal humidity1,BigDecimal humidty2){
+		return ((humidity1.add(humidty2)).divide(BIGDECIMAL_2));
 	}
 	
+	public final static BigDecimal BIGDECIMAL_2 = new BigDecimal(2);
 	
 }
